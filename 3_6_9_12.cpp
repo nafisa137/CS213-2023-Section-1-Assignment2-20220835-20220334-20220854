@@ -41,8 +41,38 @@ void binaryNum(int n) {
 
 
 
+bool bears(int n) {
+    // Base cases
+    if (n == 42) {
+        return true;
+    } else if (n < 42) {
+        return false;
+    }
 
-int main() {
+    // Rule 1: If n is even, call the function recursively with n/2.
+    if (n % 2 == 0 && bears(n / 2)) {
+        return true;
+    }
+
+    // Rule 2: If n is divisible by 3 or 4, calculate the next number and call the function recursively.
+    int lastDigit = n % 10;
+    int secondLastDigit = (n % 100) / 10;
+    int nextNumber = lastDigit * secondLastDigit;
+    if ((n % 3 == 0 || n % 4 == 0) && bears(n - nextNumber)) {
+        return true;
+    }
+
+    // Rule 3: If n is divisible by 5, call the function recursively with n - 42.
+    if (n % 5 == 0 && bears(n - 42)) {
+        return true;
+    }
+
+    // If none of the rules lead to a win, return false.
+    return false;
+}
+
+
+int main(){
     int x;
     cout << "case number:\n";
     cin >> x;
@@ -77,6 +107,17 @@ else if(x == 3){
       cout << "Enter K\n";
        cin >>  m ;
         numbers(prefix , m);
+}
+else if (x == 4){
+        int i;
+        cout << "Enter the number of bears: ";
+        cin >> i;
+
+        if (bears(i)) {
+            cout << "You have reached the goal!" << endl;
+        } else {
+            cout << "You lost the game " << endl;
+        }
 }
     return 0;
 }
