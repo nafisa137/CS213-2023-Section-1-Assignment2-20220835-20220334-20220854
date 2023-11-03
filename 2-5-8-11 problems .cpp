@@ -163,8 +163,8 @@ cout<<"5. A program that manages a list of up to 10 players and their high score
 cout<<"8. A Fractal Pattern.\n";
 cout<<"11.File comparison.\n";
   cin>>choice;
-  
-  
+\\Clear the newline character
+  cin.ignore();
   
 if(choice==2){
   
