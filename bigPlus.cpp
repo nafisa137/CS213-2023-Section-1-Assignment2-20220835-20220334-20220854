@@ -21,9 +21,13 @@ public:
     bool operator == (const BigReal& newReal);
     BigReal operator + (const BigReal& newReal);
 
-   
+    friend ostream& operator<<(ostream& os, const BigReal& obj);
+    friend istream& operator>>(istream& is, BigReal& obj);
 };
 
+ostream& operator<<(ostream& os, const BigReal& obj) {
+    os << obj.sign << obj.integer << "." << obj.fraction;
+    return os;
 }
 
 BigReal BigReal::operator + (const BigReal& newReal) {
