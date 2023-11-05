@@ -1,3 +1,9 @@
+//file: 
+//purpose: Task 2 bigreal numbers
+//Author: Safa Tawfik, nafisa Abdulrahman, mariam matar
+//section: s1, s2
+//ID: 20220835, 20220854, 20220334
+
 #include <iostream>
 #include <string>
 
