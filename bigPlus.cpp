@@ -11,9 +11,16 @@ private:
 public:
     BigReal() : sign('+'), integer("0"), fraction("0") {}
     BigReal(string real) {
+        if (regex_match(real,regex("[+-]?\\d*.?\\d+"))){
         sign = (real[0] == '-') ? '-' : '+';
         integer = real.substr(1, real.find('.') - 1);
         fraction = real.substr(real.find('.') + 1);
+    }
+        else{
+        sign = '+';
+        integer = "0";
+        fraction = ".0";
+    }
     }
 
     bool operator > (const BigReal& newReal);
