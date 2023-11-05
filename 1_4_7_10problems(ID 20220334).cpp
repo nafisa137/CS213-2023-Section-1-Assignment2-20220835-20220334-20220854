@@ -1,4 +1,4 @@
-//file:main.cpp
+//file:1_4_7_10problems.cpp
 //purpose: solutions of problems 1,4,7,10
 //Author: mariam Matar Ahmed Ali
 //section: s1,s2
