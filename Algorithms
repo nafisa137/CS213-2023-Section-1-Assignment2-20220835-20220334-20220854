@@ -35,3 +35,30 @@ Main Function:
 
 
 operator (-)
+
+Overloaded Operator:
+     - `-` (subtraction): Perform subtraction of two `BigReal` objects.
+
+verloaded Output Operator:
+   - Overload the stream output (`<<`) operator for easy output of `BigReal` objects.
+
+operator '-' Implementation:
+   - The subtraction operator `-` is defined as a member function for the `BigReal` class.
+   - Initialize a `BigReal` object `result` to store the result of the subtraction.
+   - Extract the signs, integers, and fractional parts of both operands.
+   - Make sure the integer parts have the same length by adding leading zeros if needed.
+   - Convert the integer parts of both operands to `long double` for numerical comparison.
+   - If the operands are equal, set the result to positive zero.
+   - If the left operand is smaller, swap the operands and set the result's sign accordingly.
+   - Initialize a carry variable to handle borrowing during subtraction.
+   - Iterate through the digits of both integer parts from right to left, subtracting corresponding digits along with any carry, and update the result's integer part.
+   - If the subtraction result is negative, add 10 to it and set the carry to 1.
+   - Remove leading zeros from the result.
+   - Return the result.
+
+6. **Main Function**:
+   - Create two `BigReal` objects `a` and `b` with the given real numbers.
+   - Subtract `b` from `a` to calculate the result.
+   - Print the result to the standard output.
+
+The code demonstrates how to handle large real numbers with the ability to subtract them and properly display the result
