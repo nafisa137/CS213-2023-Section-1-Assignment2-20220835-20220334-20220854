@@ -1,4 +1,7 @@
-// Safa Tawfik
+//file: 2-5-8-11 problems.cpp
+//purpose: solving 2,5,8,11 problems
+//Author: Safa Tawfik
+//section: s1, s2
 //ID: 20220835
 
 #include <iostream>
