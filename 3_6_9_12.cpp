@@ -1,7 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
+#include <map>
+#include <regex>
+#include <fstream>
 using namespace std;
 
 vector<string> split(const string& target, const string& delimiter) {
@@ -30,7 +32,7 @@ void binaryNum(int n) {
 }
 
 
-    void numbers(const string& prefix, int k) {
+void numbers(const string& prefix, int k) {
     if (k == 0) {
         cout << prefix << std::endl;
     } else {
@@ -71,6 +73,80 @@ bool bears(int n) {
     return false;
 }
 
+map<string, int> keywords{
+        {"Bank", 2},
+        {"Credit card", 3},
+        {"Social security number", 3},
+        {"Password", 2},
+        {"Login", 2},
+        {"Account", 2},
+        {"Verification", 3},
+        {"Verify", 2},
+        {"Update", 1},
+        {"Security", 3},
+        {"Information", 2},
+        {"Verify your account", 2},
+        {"Click the link", 3},
+        {"Email account", 2},
+        {"Suspend", 1},
+        {"Your account will be locked", 3},
+        {"Confirm", 3},
+        {"Fraud", 1},
+        {"Urgent", 2},
+        {"Unauthorized access", 3},
+        {"Phishing", 2},
+        {"Suspicious activity", 2},
+        {"Re-confirm", 3},
+        {"Financial institution", 1},
+        {"Deactivate", 2},
+        {"Fraudulent", 2},
+        {"Social network", 1},
+        {"Reset password", 3},
+        {"PayPal", 3},
+        {"eBay", 3}
+};
+
+void scan(const string& filename) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "Cannot open this file" << endl;
+    } else {
+        string lines;
+        string words;
+        while (getline(file, lines)) {
+            words += lines;
+        }
+        file.close();
+
+        int totalPoints = 0;
+        vector<tuple<string, int, int>> phishing;
+
+        for (const auto& entry : keywords) {
+            const string& keyword = entry.first;
+            int points = entry.second;
+
+            regex regex("\\b" + keyword + "\\b", regex_constants::icase);
+
+            int occurrences = distance(sregex_iterator(words.begin(), words.end(), regex), sregex_iterator());
+
+            if (occurrences > 0) {
+                totalPoints += points * occurrences;
+                phishing.emplace_back(keyword, occurrences, points * occurrences);
+            }
+        }
+
+        for (const auto& result : phishing) {
+            cout << get<0>(result) << " - Occurrences: " << get<1>(result) << ", Total Points: " << get<2>(result) << endl;
+        }
+
+        cout << "Total Points for the message: " << totalPoints << endl;
+    }
+}
+
+
+
+
+
 
 int main(){
     int x;
@@ -99,25 +175,33 @@ int main(){
         cin >> m;
         binaryNum(m);
     }
-else if(x == 3){
-    string prefix;
-    cout << "Enter prefix\n";
+    else if(x == 3){
+        string prefix;
+        cout << "Enter prefix\n";
         getline(cin, prefix);
-      int m;
-      cout << "Enter K\n";
-       cin >>  m ;
+        int m;
+        cout << "Enter K\n";
+        cin >>  m ;
         numbers(prefix , m);
-}
-else if (x == 4){
+    }
+    else if (x == 4){
         int i;
         cout << "Enter the number of bears: ";
         cin >> i;
 
         if (bears(i)) {
             cout << "You have reached the goal!" << endl;
-        } else {
+        }
+        else {
             cout << "You lost the game " << endl;
         }
-}
+    }
+    else if(x == 5){
+        string filename = "sample_email.txt"; // Replace with the name of your text file
+        scan(filename);
+    }
+    else {
+        cout <<"choose a case \n";
+    }
     return 0;
 }
