@@ -11,12 +11,23 @@ private:
 public:
     BigReal() : sign('+'), integer("0"), fraction("0") {}
     BigReal(string real) {
-        if (regex_match(real,regex("[+-]?\\d*.?\\d+"))){
+        if (regex_match(real,regex("[+-]?\\d*.?\\d+"))){// before we do any operations on the number that
+                                                        // the user entered, we should check first whether
+                                                        // it was a valid number or not, and to check we will use
+                                                        // this function regex to check if  the input number
+                                                        // has one sign (+ or -) or more .. and check also if it
+                                                        // had one dot or more, this step is essential to determine 
+                                                        // the validation of the number
+        
+            
         sign = (real[0] == '-') ? '-' : '+';
-        integer = real.substr(1, real.find('.') - 1);
+        integer = real.substr(1, real.find('.') - 1);// if and only if the number is valid, we will start to store its sign,
+                                                    // integer part of it and the fraction part, and this will help us
+                                                    // later when we do operations of add and subtraction and even when
+                                                    // printing the final result itself
         fraction = real.substr(real.find('.') + 1);
     }
-        else{
+        else{// otherwise we will give the number the value 0.0
         sign = '+';
         integer = "0";
         fraction = ".0";
