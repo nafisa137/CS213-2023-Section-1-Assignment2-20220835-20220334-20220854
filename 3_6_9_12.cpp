@@ -1,3 +1,9 @@
+//file: 3-6-9-12 problems.cpp
+//purpose: solving 3,6,9,12 problems
+//Author: nafisa abdulrahman
+//section: s1, s2
+//ID: 20220854
+
 #include <iostream>
 #include <vector>
 #include <string>
