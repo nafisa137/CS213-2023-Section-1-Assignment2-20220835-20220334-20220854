@@ -1,0 +1,37 @@
+operator (+)
+
+
+Class Definition:
+   - Define a class `BigReal` with private members:
+     - `sign` (a character, '+' or '-') to represent the sign of the number.
+     - `integer` (a string) to store the integer part of the number.
+     - `fraction` (a string) to store the fractional part of the number.
+
+Constructors:
+   - Define two constructors:
+     - Default constructor: Initializes the object with a default value of 0.
+     - Parameterized constructor: Accepts a string representation of a real number and extracts the sign, integer, and fractional parts.
+
+Overloaded Operator:
+     - `+` (addition): Perform addition of two `BigReal` objects.
+
+
+
+ Implementation:
+   - The addition operator `+` is defined as a member function for the `BigReal` class.
+   - Initialize a `BigReal` object `result` to store the result of the addition.
+   - Extract the signs, integers, and fractional parts of both operands.
+   - Make sure the integer parts have the same length by adding leading zeros if needed.
+   - Initialize a carry variable to handle carry during addition.
+   - Iterate through the digits of both integer parts from right to left, add corresponding digits along with any carry, and update the result's integer part.
+   - If there is a carry after the loop, add it to the result.
+   - Set the sign of the result based on the signs of the operands.
+   - Return the result.
+
+Main Function:
+   - Create two `BigReal` objects `a` and `b` with the given real numbers.
+   - Add `a` and `b` to calculate the result.
+   - Print the result to the standard output.
+
+
+operator (-)
