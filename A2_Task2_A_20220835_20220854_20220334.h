@@ -113,15 +113,21 @@ bool BigReal:: operator > (const BigReal& newReal) {
 
 
 bool BigReal:: operator < (const BigReal& newReal) {
-    //check if the frist number  if + and second numder is -  then return false
+    //check if the frist number  if + and second numder is -  then return false 
     if (sign == '+' && newReal.sign == '-') {
         return false;
     }
-        //check if the frist number  if - and second numder is +  then return true
+    //check if the frist number  if - and second numder is +  then return true 
     else if (sign == '-' && newReal.sign == '+') {
         return true;
     }
+
+    if (fraction == "0" && newReal.fraction == "0")
+        return false;
+
+   
     //cheke if the 2 numbers are differnt in size in integer part I will add zero frome the left of the smallest number to make the 2 number in same size
+   
     string temp1 = integer;
     string temp2 = newReal.integer;
     while (temp1.length() < temp2.length()) {
@@ -131,16 +137,17 @@ bool BigReal:: operator < (const BigReal& newReal) {
         temp2 = '0' + temp2;
     }
 
-    if (temp1 < temp2) {
+    if (temp1 < temp2 && sign == '+') {
         return true;
     }
-    else if (temp1 > temp2) {
-        return false;
+    
+   else if (temp1 > temp2&&sign=='+') {
+        return  false;
     }
-
-    if (fraction == "0" && newReal.fraction == "0") {
-        return false;
+    else if (temp1 >temp2 && sign == '-') {
+        return  true;
     }
+  
     //cheke if the 2 numbers are differnt in size in fraction part I will add zero frome the right of the smallest number to make the 2 number in same size
 
     string frcTemp1 = fraction;
@@ -152,12 +159,16 @@ bool BigReal:: operator < (const BigReal& newReal) {
         frcTemp2 += '0';
     }
 
-    if (frcTemp1 < frcTemp2) {
+    if (frcTemp1 < frcTemp2&& sign=='+'&& newReal.sign=='+'&&temp1==temp2) {
         return true;
     }
-
-    return false;
-
+    else if(frcTemp1 > frcTemp2 && sign == '-' && newReal.sign == '-' && temp1 == temp2) {
+      return  true;
+    }
+    else {
+        return false;
+    }
+ 
 }
 bool BigReal:: operator == (const BigReal& newReal) {
     //check if the sign and two number is equal
