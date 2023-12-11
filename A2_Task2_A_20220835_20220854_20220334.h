@@ -48,7 +48,8 @@ public:
     bool operator < (const BigReal& newReal);
     bool operator == (const BigReal& newReal);
     BigReal operator - (const BigReal& newReal);
-    BigReal operator + (const BigReal& newReal);
+    BigReal operator+(const BigReal& newReal) const;
+
 
 
     friend ostream& operator<<(ostream& os, const BigReal& obj);
@@ -64,16 +65,16 @@ ostream& operator<<(ostream& os, const BigReal& obj) {
 
 bool BigReal:: operator > (const BigReal& newReal) {
 
-    //check if the frist number  if + and second numder is -  then return true 
+    //check if the frist number  if + and second numder is -  then return true
 
     if (sign == '+' && newReal.sign == '-') {
         return true;
     }
-    //check if the frist number  if - and second numder is +  then return false 
+        //check if the frist number  if - and second numder is +  then return false
     else if (sign == '-' && newReal.sign == '+') {
         return false;
     }
-  
+
     //cheke if the 2 numbers are differnt in size in integer part I will add zero frome the left of the smallest number to make the 2 number in same size
 
     string temp1 = integer;
@@ -84,19 +85,19 @@ bool BigReal:: operator > (const BigReal& newReal) {
     while (temp2.length() < temp1.length()) {
         temp2 = '0' + temp2;
     }
-   
-        if ((temp1 > temp2) && sign=='+') {
-            return true;
 
-        }
+    if ((temp1 > temp2) && sign=='+') {
+        return true;
 
-        else if (temp1 < temp2 && sign == '-') {
-            return  true;
-        }
+    }
+
+    else if (temp1 < temp2 && sign == '-') {
+        return  true;
+    }
 
 
 
-    //check cheke if the 2 numbers are differnt in size in fraction part I will add zero frome the right of the smallest number to make the 2 number in same size 
+    //check cheke if the 2 numbers are differnt in size in fraction part I will add zero frome the right of the smallest number to make the 2 number in same size
 
 
 
@@ -124,16 +125,16 @@ bool BigReal:: operator > (const BigReal& newReal) {
 
 
 
-  
+
 }
 
 
 bool BigReal:: operator < (const BigReal& newReal) {
-    //check if the frist number  if + and second numder is -  then return false 
+    //check if the frist number  if + and second numder is -  then return false
     if (sign == '+' && newReal.sign == '-') {
         return false;
     }
-    //check if the frist number  if - and second numder is +  then return true 
+        //check if the frist number  if - and second numder is +  then return true
     else if (sign == '-' && newReal.sign == '+') {
         return true;
     }
@@ -141,9 +142,9 @@ bool BigReal:: operator < (const BigReal& newReal) {
     if (fraction == "0" && newReal.fraction == "0")
         return false;
 
-   
+
     //cheke if the 2 numbers are differnt in size in integer part I will add zero frome the left of the smallest number to make the 2 number in same size
-   
+
     string temp1 = integer;
     string temp2 = newReal.integer;
     while (temp1.length() < temp2.length()) {
@@ -156,14 +157,14 @@ bool BigReal:: operator < (const BigReal& newReal) {
     if (temp1 < temp2 && sign == '+') {
         return true;
     }
-    
-   else if (temp1 > temp2&&sign=='+') {
+
+    else if (temp1 > temp2&&sign=='+') {
         return  false;
     }
     else if (temp1 >temp2 && sign == '-') {
         return  true;
     }
-  
+
     //cheke if the 2 numbers are differnt in size in fraction part I will add zero frome the right of the smallest number to make the 2 number in same size
 
     string frcTemp1 = fraction;
@@ -179,12 +180,12 @@ bool BigReal:: operator < (const BigReal& newReal) {
         return true;
     }
     else if(frcTemp1 > frcTemp2 && sign == '-' && newReal.sign == '-' && temp1 == temp2) {
-      return  true;
+        return  true;
     }
     else {
         return false;
     }
- 
+
 }
 bool BigReal:: operator == (const BigReal& newReal) {
     //check if the sign and two number is equal
