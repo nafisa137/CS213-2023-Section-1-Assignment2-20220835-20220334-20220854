@@ -201,54 +201,90 @@ bool BigReal:: operator == (const BigReal& newReal) {
 
 }
 
-BigReal BigReal::operator - (const BigReal& newReal) {
+BigReal BigReal::operator-(const BigReal& newReal) {
     BigReal result;
     char SignX = sign, SignY = newReal.sign;
-    int carry = 0;
-    string x = integer;
-    string y = newReal.integer;
+    int borrow = 0;
+    std::string xInteger = integer;
+    std::string yInteger = newReal.integer;
+    std::string xFraction = fraction;
+    std::string yFraction = newReal.fraction;
 
-    while (x.length() < y.length()) {
-        x = '0' + x;
+    while (xInteger.length() < yInteger.length()) {
+        xInteger = '0' + xInteger;
     }
-    while (y.length() < x.length()) {
-        y = '0' + y;
+    while (yInteger.length() < xInteger.length()) {
+        yInteger = '0' + yInteger;
     }
 
-    long double x2 = stold(x);
-    long double y2 = stold(y);
+    while (xFraction.length() < yFraction.length()) {
+        xFraction += '0';
+    }
+    while (yFraction.length() < xFraction.length()) {
+        yFraction += '0';
+    }
 
-    if (x2 == y2) {
-        result.sign = '+';
-        result.integer = "0";
-        result.fraction = "0";
-        return result;
-    } else if (x2 < y2) {
-        result.sign = (SignX == '+') ? '-' : '+';
-        swap(x, y);
+    if (SignX != SignY) {
+        result.sign = (SignX == '+') ? '+' : '-';
     } else {
-        result.sign = SignX;
+        long double x2 = stold(xInteger + "." + xFraction);
+        long double y2 = stold(yInteger + "." + yFraction);
+
+        if (x2 == y2) {
+            result.sign = '+';
+            result.integer = "0";
+            result.fraction = "0";
+            return result;
+        } else if (x2 < y2) {
+            result.sign = (SignX == '+') ? '-' : '+';
+            std::swap(xInteger, yInteger);
+            std::swap(xFraction, yFraction);
+        } else {
+            result.sign = SignX;
+        }
     }
 
-    auto x1 = x.rbegin();
-    auto y1 = y.rbegin();
+    auto xIntegerIter = xInteger.rbegin();
+    auto yIntegerIter = yInteger.rbegin();
+    auto xFractionIter = xFraction.rbegin();
+    auto yFractionIter = yFraction.rbegin();
 
-    while (x1 != x.rend()) {
-        int digit1 = *x1 - '0';
-        int digit2 = *y1 - '0';
+    // Subtract the fractional parts
+    while (xFractionIter != xFraction.rend()) {
+        int digit1 = *xFractionIter - '0';
+        int digit2 = *yFractionIter - '0';
 
-        int diff = digit1 - digit2 - carry;
+        int diff = digit1 - digit2 - borrow;
         if (diff < 0) {
-            carry = 1;
+            borrow = 1;
             diff += 10;
         } else {
-            carry = 0;
+            borrow = 0;
+        }
+
+        result.fraction = char(diff + '0') + result.fraction;
+
+        ++xFractionIter;
+        ++yFractionIter;
+    }
+
+    // Subtract the integer parts
+    while (xIntegerIter != xInteger.rend()) {
+        int digit1 = *xIntegerIter - '0';
+        int digit2 = *yIntegerIter - '0';
+
+        int diff = digit1 - digit2 - borrow;
+        if (diff < 0) {
+            borrow = 1;
+            diff += 10;
+        } else {
+            borrow = 0;
         }
 
         result.integer = char(diff + '0') + result.integer;
 
-        ++x1;
-        ++y1;
+        ++xIntegerIter;
+        ++yIntegerIter;
     }
 
     // Remove leading zeros from the result
@@ -258,6 +294,7 @@ BigReal BigReal::operator - (const BigReal& newReal) {
 
     return result;
 }
+
 
 BigReal BigReal::operator+(const BigReal& newReal) const {
     BigReal result;
