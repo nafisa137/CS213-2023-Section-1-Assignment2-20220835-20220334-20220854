@@ -259,18 +259,29 @@ BigReal BigReal::operator - (const BigReal& newReal) {
     return result;
 }
 
-BigReal BigReal::operator + (const BigReal& newReal) {
+BigReal BigReal::operator+(const BigReal& newReal) const {
     BigReal result;
     char SignX = sign, SignY = newReal.sign;
     int carry = 0;
-    string x = integer;
-    string y = newReal.integer;
 
-    while (x.length() < y.length()) {
-        x = '0' + x;
+    // Pad the integer and fraction parts with leading zeros
+    std::string xInteger = integer;
+    std::string yInteger = newReal.integer;
+    std::string xFraction = fraction;
+    std::string yFraction = newReal.fraction;
+
+    while (xInteger.length() < yInteger.length()) {
+        xInteger = '0' + xInteger;
     }
-    while (y.length() < x.length()) {
-        y = '0' + y;
+    while (yInteger.length() < xInteger.length()) {
+        yInteger = '0' + yInteger;
+    }
+
+    while (xFraction.length() < yFraction.length()) {
+        xFraction += '0';
+    }
+    while (yFraction.length() < xFraction.length()) {
+        yFraction += '0';
     }
 
     if (SignX == SignY) {
@@ -279,22 +290,41 @@ BigReal BigReal::operator + (const BigReal& newReal) {
         result.sign = SignX;
     }
 
-    auto x1 = x.rbegin();
-    auto y1 = y.rbegin();
+    // Add the fractional parts
+    auto xFractionIter = xFraction.rbegin();
+    auto yFractionIter = yFraction.rbegin();
 
-    while (x1 != x.rend()) {
-        int digit1 = *x1 - '0';
-        int digit2 = *y1 - '0';
+    while (xFractionIter != xFraction.rend()) {
+        int digit1 = *xFractionIter - '0';
+        int digit2 = *yFractionIter - '0';
+
+        int sum = digit1 + digit2 + carry;
+        carry = sum / 10;
+
+        result.fraction = char((sum % 10) + '0') + result.fraction;
+
+        ++xFractionIter;
+        ++yFractionIter;
+    }
+
+    // Add the integer parts
+    auto xIntegerIter = xInteger.rbegin();
+    auto yIntegerIter = yInteger.rbegin();
+
+    while (xIntegerIter != xInteger.rend()) {
+        int digit1 = *xIntegerIter - '0';
+        int digit2 = *yIntegerIter - '0';
 
         int sum = digit1 + digit2 + carry;
         carry = sum / 10;
 
         result.integer = char((sum % 10) + '0') + result.integer;
 
-        ++x1;
-        ++y1;
+        ++xIntegerIter;
+        ++yIntegerIter;
     }
 
+    // If there is a carry after adding the integer parts, add it to the result
     if (carry > 0) {
         result.integer = char(carry + '0') + result.integer;
     }
